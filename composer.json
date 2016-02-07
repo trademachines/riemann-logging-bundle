@@ -11,10 +11,11 @@
     "symfony/config": "~2.3|~3.0",
     "symfony/yaml": "~2.3|~3.0",
     "symfony/stopwatch": "~2.3|~3.0",
-    "trademachines/riemann-client-php": "~1.0"
+    "trademachines/riemann-client-php": "~1.0",
+    "psr/log": "1.0"
   },
   "require-dev": {
-    "symfony/phpunit-bridge": "~2.7|~3.0"
+    "phpunit/phpunit": "~4.8"
   },
   "autoload": {
     "psr-4": {
