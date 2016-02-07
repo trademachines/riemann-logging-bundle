@@ -24,6 +24,10 @@ class RiemannLogger
         $this->name          = $name;
     }
 
+    /**
+     * @param array $data
+     * @param array $attributes
+     */
     public function log(array $data, array $attributes = [])
     {
         $eventData = $this->getRiemannEventData($data, $attributes);
