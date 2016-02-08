@@ -3,6 +3,7 @@
 namespace Trademachines\Bundle\RiemannLoggingBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\KernelEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger;
 
@@ -39,9 +40,9 @@ class RequestListener
     }
 
     /**
-     * @param KernelEvent $event
+     * @param PostResponseEvent $event
      */
-    public function onKernelTerminate(KernelEvent $event)
+    public function onKernelTerminate(PostResponseEvent $event)
     {
         $stopwatchEvent = $this->stopwatch->stop('request');
         $duration       = $stopwatchEvent->getDuration();

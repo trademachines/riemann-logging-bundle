@@ -4,7 +4,9 @@ namespace Trademachines\Bundle\RiemannLoggingBundle\Tests\EventListener;
 
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Tests\Fixtures\KernelForTest;
 use Symfony\Component\Stopwatch\StopwatchEvent;
@@ -42,7 +44,7 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         $logger    = $this->getRiemannLogger();
         $stopwatch = $this->getStopwatch();
         $listener  = new RequestListener($logger->reveal(), $stopwatch->reveal());
-        $event     = $this->getKernelEvent();
+        $event     = $this->getPostResponseEvent();
 
         $stopwatch->stop(Argument::any())->will(
             function () use ($duration) {
@@ -61,10 +63,10 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         ];
         $logger     = $this->getRiemannLogger();
         $listener   = new RequestListener($logger->reveal());
-        $event      = $this->getKernelEvent();
+        $event      = $this->getPostResponseEvent();
         $event->getRequest()->attributes->replace($attributes);
 
-        $listener->onKernelRequest($event);
+        $listener->onKernelRequest($this->getKernelEvent());
         $listener->onKernelTerminate($event);
 
         $logger->log(Argument::any(), $attributes)->shouldHaveBeenCalled();
@@ -83,6 +85,11 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
     private function getKernelEvent($requestType = HttpKernelInterface::MASTER_REQUEST)
     {
         return new KernelEvent(new KernelForTest('', true), Request::create('/'), $requestType);
+    }
+
+    private function getPostResponseEvent()
+    {
+        return new PostResponseEvent(new KernelForTest('', true), Request::create('/'), Response::create());
     }
 }
 
