@@ -48,10 +48,6 @@ class RiemannLogger
             $data['host'] = gethostname();
         }
 
-        if (!isset($data['ttl'])) {
-            $data['ttl'] = 1;
-        }
-
         if ($service = $this->getService($data)) {
             $data['service'] = $service;
         }

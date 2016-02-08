@@ -25,24 +25,6 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $client->sendEvent(Argument::withEntry('host', 'foo'))->shouldHaveBeenCalled();
     }
 
-    public function testAddTtlIfNotPresent()
-    {
-        $client = $this->getRiemannClient();
-        $logger = new RiemannLogger($client->reveal());
-        $logger->log([]);
-
-        $client->sendEvent(Argument::withEntry('ttl', 1))->shouldHaveBeenCalled();
-    }
-
-    public function testDontOverrideTtl()
-    {
-        $client = $this->getRiemannClient();
-        $logger = new RiemannLogger($client->reveal());
-        $logger->log(['ttl' => 2611]);
-
-        $client->sendEvent(Argument::withEntry('ttl', 2611))->shouldHaveBeenCalled();
-    }
-
     public function testSetServiceName()
     {
         $client = $this->getRiemannClient();
