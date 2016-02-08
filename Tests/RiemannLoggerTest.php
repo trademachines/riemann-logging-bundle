@@ -13,7 +13,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal());
         $logger->log([]);
 
-        $client->sendEvent(Argument::withKey('host'));
+        $client->sendEvent(Argument::withKey('host'))->shouldHaveBeenCalled();
     }
 
     public function testDontOverrideHost()
@@ -22,7 +22,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal());
         $logger->log(['host' => 'foo']);
 
-        $client->sendEvent(Argument::withEntry('host', 'foo'));
+        $client->sendEvent(Argument::withEntry('host', 'foo'))->shouldHaveBeenCalled();
     }
 
     public function testAddTtlIfNotPresent()
@@ -31,7 +31,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal());
         $logger->log([]);
 
-        $client->sendEvent(Argument::withEntry('ttl', 1));
+        $client->sendEvent(Argument::withEntry('ttl', 1))->shouldHaveBeenCalled();
     }
 
     public function testDontOverrideTtl()
@@ -40,7 +40,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal());
         $logger->log(['ttl' => 2611]);
 
-        $client->sendEvent(Argument::withEntry('ttl', 2611));
+        $client->sendEvent(Argument::withEntry('ttl', 2611))->shouldHaveBeenCalled();
     }
 
     public function testSetServiceName()
@@ -49,7 +49,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal(), 'service');
         $logger->log([]);
 
-        $client->sendEvent(Argument::withEntry('service', 'service'));
+        $client->sendEvent(Argument::withEntry('service', 'service'))->shouldHaveBeenCalled();
     }
 
     public function testPrependServiceName()
@@ -59,7 +59,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger      = new RiemannLogger($client->reveal(), $serviceName);
         $logger->log(['service' => 'foo']);
 
-        $client->sendEvent(Argument::withEntry('service', 'service.foo'));
+        $client->sendEvent(Argument::withEntry('service', 'service.foo'))->shouldHaveBeenCalled();
     }
 
     public function testOnlyUseServiceFromData()
@@ -68,7 +68,7 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal());
         $logger->log(['service' => 'foo']);
 
-        $client->sendEvent(Argument::withEntry('service', 'foo'));
+        $client->sendEvent(Argument::withEntry('service', 'foo'))->shouldHaveBeenCalled();
     }
 
     public function testReformatAttributes()
@@ -77,7 +77,9 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new RiemannLogger($client->reveal());
         $logger->log([], ['foo' => 'bar']);
 
-        $client->sendEvent(Argument::withEntry('attributes', [['key' => 'foo', 'value' => 'bar']]));
+        $client->sendEvent(
+            Argument::withEntry('attributes', [['key' => 'foo', 'value' => 'bar']])
+        )->shouldHaveBeenCalled();
     }
 
     private function getRiemannClient()

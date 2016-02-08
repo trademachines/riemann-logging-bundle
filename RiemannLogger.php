@@ -74,7 +74,7 @@ class RiemannLogger
 
     private function getService(array $data)
     {
-        if ($this->name) {
+        if (!$this->name) {
             return null;
         }
 
