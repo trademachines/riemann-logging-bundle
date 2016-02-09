@@ -15,7 +15,11 @@
     "psr/log": "1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.8"
+    "phpunit/phpunit": "~4.8",
+    "symfony/monolog-bundle": "~2.4"
+  },
+  "suggest": {
+    "symfony/monolog-bundle": "When using the monolog bundle the logging bundle sends additional metrics to riemann"
   },
   "autoload": {
     "psr-4": {
