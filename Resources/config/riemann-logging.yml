@@ -1,0 +1,29 @@
+parameters:
+  riemann.host: localhost
+  riemann.port: 5555
+  riemann.transport.class: Trademachines\Riemann\Transport\UdpSocket
+  riemann.client.class: Trademachines\Riemann\Client
+  riemann.logger.name: ~
+  riemann.logger.class: Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger
+  riemann.request_listener.class: Trademachines\Bundle\RiemannLoggingBundle\EventListener\RequestListener
+
+services:
+  riemann.transport:
+    class: %riemann.transport.class%
+    arguments: [ %riemann.host%, %riemann.port% ]
+
+  riemann.client:
+    class: %riemann.client.class%
+    arguments:
+      - @riemann.transport
+
+  riemann.logger:
+    class: %riemann.logger.class%
+    arguments: [ @riemann.client, %riemann.logger.name% ]
+
+  riemann.request_listener:
+    class: %riemann.request_listener.class%
+    arguments: [ @riemann.logger ]
+    tags:
+      - { name: kernel.event_listener, event: kernel.request }
+      - { name: kernel.event_listener, event: kernel.terminate }

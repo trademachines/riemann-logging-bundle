@@ -1,0 +1,11 @@
+---
+parameters:
+  riemann.integration.monolog: true
+  riemann.integration.monolog.logger.class: Trademachines\Bundle\RiemannLoggingBundle\Integration\MonologBundle\RiemannAggregateRecordsLogger
+
+services:
+  riemann.integration.monolog.logger:
+    class: %riemann.integration.monolog.logger.class%
+    arguments: [ @riemann.logger ]
+    tags:
+      - { name: kernel.event_listener, event: kernel.terminate }
