@@ -46,8 +46,14 @@ class RiemannAggregateRecordsLoggerTest extends \PHPUnit_Framework_TestCase
         $logger->handle(['level_name' => 'bar']);
         $logger->flush();
 
-        $riemannLogger->log(Argument::withEntry('metrics', 1), Argument::withEntry('level', 'foo'))->shouldHaveBeenCalled();
-        $riemannLogger->log(Argument::withEntry('metrics', 2), Argument::withEntry('level', 'bar'))->shouldHaveBeenCalled();
+        $riemannLogger->log(
+            Argument::withEntry('metrics', 1),
+            Argument::withEntry('level', 'foo')
+        )->shouldHaveBeenCalled();
+        $riemannLogger->log(
+            Argument::withEntry('metrics', 2),
+            Argument::withEntry('level', 'bar')
+        )->shouldHaveBeenCalled();
     }
 
     private function getRiemannLogger()

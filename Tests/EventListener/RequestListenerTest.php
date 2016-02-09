@@ -86,7 +86,10 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         $listener->onKernelRequest($this->getKernelEvent());
         $listener->onKernelTerminate($event);
 
-        $logger->log(Argument::any(), ['foo' => 'array[length=1]', 'bar' => 'unknown[type=object,class=stdClass]'])->shouldHaveBeenCalled();
+        $logger->log(
+            Argument::any(),
+            ['foo' => 'array[length=1]', 'bar' => 'unknown[type=object,class=stdClass]']
+        )->shouldHaveBeenCalled();
     }
 
     private function getRiemannLogger()

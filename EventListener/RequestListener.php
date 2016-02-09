@@ -72,8 +72,8 @@ class RequestListener
                     $flattened[$key] = $value;
                     break;
                 default:
-                    $type            = gettype($value);
-                    $info            = 'type=' . $type;
+                    $type = gettype($value);
+                    $info = 'type=' . $type;
                     if (is_object($value)) {
                         $info .= ',class=' . get_class($value);
                     }
