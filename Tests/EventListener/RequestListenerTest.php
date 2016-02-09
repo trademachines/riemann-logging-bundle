@@ -72,6 +72,23 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         $logger->log(Argument::any(), $attributes)->shouldHaveBeenCalled();
     }
 
+    public function testFlattenSpecificAttributes()
+    {
+        $attributes = [
+            'foo' => [1],
+            'bar' => new \stdClass(),
+        ];
+        $logger     = $this->getRiemannLogger();
+        $listener   = new RequestListener($logger->reveal());
+        $event      = $this->getPostResponseEvent();
+        $event->getRequest()->attributes->replace($attributes);
+
+        $listener->onKernelRequest($this->getKernelEvent());
+        $listener->onKernelTerminate($event);
+
+        $logger->log(Argument::any(), ['foo' => 'array[length=1]', 'bar' => 'unknown[type=object,class=stdClass]'])->shouldHaveBeenCalled();
+    }
+
     private function getRiemannLogger()
     {
         return $this->prophesize('Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger');

@@ -46,7 +46,7 @@ class RequestListener
     {
         $stopwatchEvent = $this->stopwatch->stop('request');
         $duration       = $stopwatchEvent->getDuration();
-        $attributes     = $event->getRequest()->attributes->all();
+        $attributes     = $this->flattenAttributes($event->getRequest()->attributes->all());
 
         $data = [
             'service' => 'request.duration',
@@ -54,5 +54,33 @@ class RequestListener
         ];
 
         $this->logger->log($data, $attributes);
+    }
+
+    protected function flattenAttributes(array $attributes)
+    {
+        $flattened = [];
+
+        foreach ($attributes as $key => $value) {
+            switch (true) {
+                case is_array($value):
+                    $flattened[$key] = sprintf('array[length=%s]', count($value));
+                    break;
+                case is_object($value) && method_exists($value, '__toString'):
+                case is_scalar($value):
+                case is_string($value):
+                case is_bool($value):
+                    $flattened[$key] = $value;
+                    break;
+                default:
+                    $type            = gettype($value);
+                    $info            = 'type=' . $type;
+                    if (is_object($value)) {
+                        $info .= ',class=' . get_class($value);
+                    }
+                    $flattened[$key] = sprintf('unknown[%s]', $info);
+            }
+        }
+
+        return $flattened;
     }
 }
