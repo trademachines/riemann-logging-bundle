@@ -23,7 +23,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Trademachines\\Bundle\\RiemannLoggingBundle\\": ""
+      "Trademachines\\Bundle\\RiemannLoggingBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Trademachines\\Bundle\\RiemannLoggingBundle\\Tests\\": "tests/"
     }
   }
 }
