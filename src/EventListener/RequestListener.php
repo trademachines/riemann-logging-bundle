@@ -29,6 +29,14 @@ class RequestListener
     }
 
     /**
+     * @param KernelEvent $event
+     */
+    public function onKernelRequest(KernelEvent $event)
+    {
+        // we need this, as otherwise the stopwatch is started too late
+    }
+
+    /**
      * @param PostResponseEvent $event
      */
     public function onKernelTerminate(PostResponseEvent $event)
