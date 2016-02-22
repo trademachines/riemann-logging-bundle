@@ -14,26 +14,12 @@ use Trademachines\Bundle\RiemannLoggingBundle\EventListener\RequestListener;
 
 class RequestListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDontStartStopwatchForNonMasterRequest()
+    public function testImmediatelyStartStopwatch()
     {
         $logger    = $this->getRiemannLogger();
         $stopwatch = $this->getStopwatch();
-        $listener  = new RequestListener($logger->reveal(), $stopwatch->reveal());
-        $event     = $this->getKernelEvent(HttpKernelInterface::SUB_REQUEST);
 
-        $listener->onKernelRequest($event);
-
-        $stopwatch->start(Argument::any())->shouldNotHaveBeenCalled();
-    }
-
-    public function testStartStopwatchForMasterRequest()
-    {
-        $logger    = $this->getRiemannLogger();
-        $stopwatch = $this->getStopwatch();
-        $listener  = new RequestListener($logger->reveal(), $stopwatch->reveal());
-        $event     = $this->getKernelEvent(HttpKernelInterface::MASTER_REQUEST);
-
-        $listener->onKernelRequest($event);
+        new RequestListener($logger->reveal(), $stopwatch->reveal());
 
         $stopwatch->start(Argument::any())->shouldHaveBeenCalled();
     }
@@ -66,7 +52,6 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         $event      = $this->getPostResponseEvent();
         $event->getRequest()->attributes->replace($attributes);
 
-        $listener->onKernelRequest($this->getKernelEvent());
         $listener->onKernelTerminate($event);
 
         $logger->log(Argument::any(), $attributes)->shouldHaveBeenCalled();
@@ -83,7 +68,6 @@ class RequestListenerTest extends \PHPUnit_Framework_TestCase
         $event      = $this->getPostResponseEvent();
         $event->getRequest()->attributes->replace($attributes);
 
-        $listener->onKernelRequest($this->getKernelEvent());
         $listener->onKernelTerminate($event);
 
         $logger->log(

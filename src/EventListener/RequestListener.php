@@ -25,17 +25,6 @@ class RequestListener
     {
         $this->logger    = $logger;
         $this->stopwatch = $stopwatch ?: new Stopwatch();
-    }
-
-    /**
-     * @param KernelEvent $event
-     */
-    public function onKernelRequest(KernelEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-
         $this->stopwatch->start('request');
     }
 

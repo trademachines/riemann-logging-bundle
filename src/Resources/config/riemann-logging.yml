@@ -25,5 +25,4 @@ services:
     class: %riemann.request_listener.class%
     arguments: [ @riemann.logger ]
     tags:
-      - { name: kernel.event_listener, event: kernel.request }
       - { name: kernel.event_listener, event: kernel.terminate }
