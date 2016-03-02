@@ -34,20 +34,27 @@ class RiemannLoggerTest extends \PHPUnit_Framework_TestCase
         $client->sendEvent(Argument::withEntry('service', 'service'))->shouldHaveBeenCalled();
     }
 
-    public function testPrependServiceName()
+    public function testUseNameAsAttributeIfServiceAndIdentIsGiven()
+    {
+        $serviceName    = 'some-service';
+        $identAttribute = 'source';
+        $client         = $this->getRiemannClient();
+        $logger         = new RiemannLogger($client->reveal(), $serviceName, $identAttribute);
+        $logger->log(['service' => 'foo']);
+
+        $client->sendEvent(
+            Argument::allOf(
+                Argument::withEntry('service', 'foo'),
+                Argument::withEntry('attributes', [['key' => $identAttribute, 'value' => $serviceName]])
+            )
+        )->shouldHaveBeenCalled();
+    }
+
+    public function testDontOverrideServiceName()
     {
         $serviceName = 'service';
         $client      = $this->getRiemannClient();
         $logger      = new RiemannLogger($client->reveal(), $serviceName);
-        $logger->log(['service' => 'foo']);
-
-        $client->sendEvent(Argument::withEntry('service', 'service.foo'))->shouldHaveBeenCalled();
-    }
-
-    public function testOnlyUseServiceFromData()
-    {
-        $client = $this->getRiemannClient();
-        $logger = new RiemannLogger($client->reveal());
         $logger->log(['service' => 'foo']);
 
         $client->sendEvent(Argument::withEntry('service', 'foo'))->shouldHaveBeenCalled();

@@ -12,16 +12,20 @@ class RiemannLogger
     /** @var string */
     protected $name;
 
+    /** @var string */
+    protected $identAttribute;
+
     /**
      * RiemannLogger constructor.
      *
      * @param RiemannClient $riemannClient
      * @param string|null   $name
      */
-    public function __construct(RiemannClient $riemannClient, $name = null)
+    public function __construct(RiemannClient $riemannClient, $name = null, $identAttribute = null)
     {
-        $this->riemannClient = $riemannClient;
-        $this->name          = $name;
+        $this->riemannClient  = $riemannClient;
+        $this->name           = $name;
+        $this->identAttribute = $identAttribute;
     }
 
     /**
@@ -65,20 +69,22 @@ class RiemannLogger
             ];
         }
 
+        if ($this->name && $this->identAttribute) {
+            $attributes[] = [
+                'key'   => $this->identAttribute,
+                'value' => $this->name,
+            ];
+        }
+
         return $attributes;
     }
 
     private function getService(array $data)
     {
-        if (!$this->name) {
+        if (!$this->name || isset($data['service'])) {
             return null;
         }
 
-        $service = $this->name;
-        if (isset($data['service'])) {
-            $service = $service . '.' . $data['service'];
-        }
-
-        return $service;
+        return $this->name;
     }
 }

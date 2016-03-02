@@ -6,6 +6,7 @@ parameters:
   riemann.logger.name: ~
   riemann.logger.class: Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger
   riemann.request_listener.class: Trademachines\Bundle\RiemannLoggingBundle\EventListener\RequestListener
+  riemann.ident.attribute: source
 
 services:
   riemann.transport:
@@ -19,7 +20,7 @@ services:
 
   riemann.logger:
     class: %riemann.logger.class%
-    arguments: [ @riemann.client, %riemann.logger.name% ]
+    arguments: [ @riemann.client, %riemann.logger.name%, %riemann.ident.attribute% ]
 
   riemann.request_listener:
     class: %riemann.request_listener.class%
