@@ -1,6 +1,8 @@
 Riemann Logging Bundle
 ======================
 
+Master: [![Build Status](https://travis-ci.org/trademachines/riemann-logging-bundle.svg?branch=master)](https://travis-ci.org/trademachines/riemann-logging-bundle)
+
 This bundle provides integration of [Riemann](http://riemann.io) library into
 the Symfony2 framework.
 
