@@ -58,6 +58,6 @@ class RiemannAggregateRecordsLoggerTest extends \PHPUnit_Framework_TestCase
 
     private function getRiemannLogger()
     {
-        return $this->prophesize('Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger');
+        return $this->prophesize('Trademachines\RiemannLogger\RiemannLogger');
     }
 }
