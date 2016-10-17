@@ -4,7 +4,7 @@ parameters:
   riemann.transport.class: Trademachines\Riemann\Transport\UdpSocket
   riemann.client.class: Trademachines\Riemann\Client
   riemann.logger.name: ~
-  riemann.logger.class: Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger
+  riemann.logger.class: Trademachines\RiemannLogger\RiemannLogger
   riemann.request_listener.class: Trademachines\Bundle\RiemannLoggingBundle\EventListener\RequestListener
   riemann.ident.attribute: source
 

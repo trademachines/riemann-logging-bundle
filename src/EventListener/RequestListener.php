@@ -5,11 +5,11 @@ namespace Trademachines\Bundle\RiemannLoggingBundle\EventListener;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Stopwatch\Stopwatch;
-use Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger;
+use Trademachines\RiemannLogger\RiemannLoggerInterface;
 
 class RequestListener
 {
-    /** @var RiemannLogger */
+    /** @var RiemannLoggerInterface */
     protected $logger;
 
     /** @var Stopwatch */
@@ -18,10 +18,10 @@ class RequestListener
     /**
      * RequestListener constructor.
      *
-     * @param RiemannLogger  $logger
-     * @param Stopwatch|null $stopwatch
+     * @param RiemannLoggerInterface $logger
+     * @param Stopwatch|null         $stopwatch
      */
-    public function __construct(RiemannLogger $logger, Stopwatch $stopwatch = null)
+    public function __construct(RiemannLoggerInterface $logger, Stopwatch $stopwatch = null)
     {
         $this->logger    = $logger;
         $this->stopwatch = $stopwatch ?: new Stopwatch();

@@ -5,11 +5,11 @@ namespace Trademachines\Bundle\RiemannLoggingBundle\Integration\MonologBundle;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
-use Trademachines\Bundle\RiemannLoggingBundle\RiemannLogger;
+use Trademachines\RiemannLogger\RiemannLoggerInterface;
 
 class RiemannAggregateRecordsLogger implements HandlerInterface
 {
-    /** @var RiemannLogger */
+    /** @var RiemannLoggerInterface */
     protected $riemannLogger;
 
     /** @var array */
@@ -18,7 +18,7 @@ class RiemannAggregateRecordsLogger implements HandlerInterface
     /** @var FormatterInterface */
     private $formatter;
 
-    public function __construct(RiemannLogger $riemannLogger)
+    public function __construct(RiemannLoggerInterface $riemannLogger)
     {
         $this->riemannLogger = $riemannLogger;
         $this->formatter     = new NullFormatter();
